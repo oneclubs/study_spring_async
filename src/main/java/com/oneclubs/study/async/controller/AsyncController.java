@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.context.request.async.DeferredResult;
 import org.springframework.web.context.request.async.WebAsyncTask;
 
 @RestController
@@ -37,5 +38,13 @@ public class AsyncController {
                 return "web async maybe timeout";
             }
         );
+    }
+
+    @GetMapping("/name-defer")
+    DeferredResult<String> getNameDefer() {
+        L.info("name deferred");
+        DeferredResult<String> result = new DeferredResult<>();
+        service.setDeferredResult(result);
+        return result;
     }
 }
