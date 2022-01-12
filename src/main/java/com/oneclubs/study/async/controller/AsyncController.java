@@ -3,9 +3,11 @@ package com.oneclubs.study.async.controller;
 import com.oneclubs.study.async.app.AsyncService;
 import com.oneclubs.study.common.ThreadUtils;
 import java.util.concurrent.Callable;
+import java.util.concurrent.CompletableFuture;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.async.DeferredResult;
@@ -46,5 +48,18 @@ public class AsyncController {
         DeferredResult<String> result = new DeferredResult<>();
         service.setDeferredResult(result);
         return result;
+    }
+
+    @GetMapping("/name-listenable")
+    ListenableFuture<String> getNameListenable() {
+        L.info("name listenable");
+        return service.getListenableValue();
+    }
+
+    @GetMapping("/name-completable")
+    CompletableFuture<String> getNameCompletable() {
+        L.info("name completable");
+        return service.getCompletableFutureResult()
+            .thenCompose(value -> service.appendCompletableFutureResult(value));
     }
 }

@@ -22,8 +22,7 @@ public class AsyncService {
         L.info("Sleep 3 seconds");
         ThreadUtils.sleep(3);
 
-        L.info("Return 10 random string name");
-        return new AsyncResult<>(RandomStringUtils.randomAlphabetic(10));
+        return new AsyncResult<>("listenable name");
     }
 
     @Async
@@ -32,8 +31,16 @@ public class AsyncService {
         L.info("Sleep 2 seconds");
         ThreadUtils.sleep(2);
 
-        L.info("Return 5 random string name");
-        return CompletableFuture.completedFuture(RandomStringUtils.randomAlphabetic(5));
+        return CompletableFuture.completedFuture("completable name");
+    }
+
+    @Async
+    public CompletableFuture<String> appendCompletableFutureResult(String value) {
+
+        L.info("Sleep 1 seconds");
+        ThreadUtils.sleep(2);
+
+        return CompletableFuture.completedFuture(value + " + " + " with extra");
     }
 
     @Async
