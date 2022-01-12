@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.async.DeferredResult;
 import org.springframework.web.context.request.async.WebAsyncTask;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitter;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 @RestController
 public class AsyncController {
@@ -61,5 +63,19 @@ public class AsyncController {
         L.info("name completable");
         return service.getCompletableFutureResult()
             .thenCompose(value -> service.appendCompletableFutureResult(value));
+    }
+
+    @GetMapping("/name-emitter")
+    ResponseBodyEmitter getNameEmitter() {
+        ResponseBodyEmitter emitter = new ResponseBodyEmitter();
+        service.appendNameToEmitter(emitter);
+        return emitter;
+    }
+
+    @GetMapping("/name-sse-emitter")
+    SseEmitter getNameSseEmitter() {
+        SseEmitter emitter = new SseEmitter();
+        service.appendNameToEmitter(emitter);
+        return emitter;
     }
 }

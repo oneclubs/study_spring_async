@@ -10,6 +10,7 @@ import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Service;
 import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.web.context.request.async.DeferredResult;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitter;
 
 @Service
 public class AsyncService {
@@ -51,5 +52,24 @@ public class AsyncService {
 
         L.info("set result to deferred");
         result.setResult("deferred name");
+    }
+
+    @Async
+    public void appendNameToEmitter(ResponseBodyEmitter emitter) {
+
+        try {
+            for (int i = 0; i < 10; i++) {
+                L.info("Sleep 0.5 seconds");
+                ThreadUtils.sleep(0.5);
+
+                emitter.send("emitter name (" + i + ")\n");
+            }
+
+            emitter.complete();
+            L.info("Emitter done");
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }

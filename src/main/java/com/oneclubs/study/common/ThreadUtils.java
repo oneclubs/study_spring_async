@@ -4,9 +4,9 @@ public final class ThreadUtils {
 
     ThreadUtils() {}
 
-    public static void sleep(long seconds) {
+    public static void sleep(double seconds) {
         try {
-            Thread.sleep(1000 * seconds);
+            Thread.sleep((long)(1000 * seconds));
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
